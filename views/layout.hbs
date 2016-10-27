@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>File Upload</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="text/javascript" src="/bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="/bower_components/ng-file-upload/ng-file-upload-shim.js"></script>
+    <script type="text/javascript" src="/bower_components/ng-file-upload/ng-file-upload.js"></script>
+    <script type="text/javascript" src="/javascripts/main.js"></script>
+  </head>
+  <body ng-app="fileUpload">
+    <div class="wrapper" ng-controller="mainCtrl">
+      <form name="uploadForm">
+        <fieldset>
+          <legend>Upload on form submit</legend>
+          Username:
+          <input type="text" name="userName" ng-model="username" size="31" required />
+          <i ng-show="uploadForm.userName.$error.required">*required</i>
+
+          <br />
+
+          Photo:
+          <input type="file" ngf-select ng-model="picFile" name="file"
+          ngf-max-size="5MB" required ngf-model-invalid="errorFile">
+          <i ng-show="fileUpload.file.$error.required">*required</i>
+          <i ng-show="fileUpload.file.$error.maxSize">File too large {{errorFile.size / 1000000:1}}MB: max 2M</i>
+
+          <img ng-show="uploadForm.file.$valid" ngf-thumbnail="picFile" class="thumb" />
+
+          <button ng-click="picFile = null" ng-show="picFile">Remove</button>
+
+          <br />
+
+          <button ng-click="uploadPic(picFile)">
+            Submit
+          </button>
+
+          <span class="progress" ng-show="picFile.progress >= 0">
+            <div style="width:{{picFile.progress}}%" ng-bind="picFile.progress + '%'">
+            </div>
+          </span>
+
+          <span ng-show="picFile.result">Upload Successful</span>
+          <span class="err" ng-show="errorMsg"></span>
+        </fieldset>
+      </form>
+    </div>
+  </body>
+</html>
